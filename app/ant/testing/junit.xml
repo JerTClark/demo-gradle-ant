@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="junit.tests" basedir="../../">
+
+    <import file="test.init.xml"/>
+
+    <available property="test.props" file="test.properties"/>
+
+    <property name="test.suite"
+              value="cla.jer.diary.core.AllTests"/>
+
+    <macrodef name="junit.tests">
+        <sequential>
+            <record name="${test.data.folder}/junit-log.txt" action="start"/>
+            <junit printsummary="true"
+                   haltonfailure="false">
+                <classpath path="${test.classpath.prop}"/>
+
+                <!--Use a formatter-->
+                <formatter type="plain" usefile="true"/>
+                <formatter type="xml"/>
+                <!--Run a single test (suite)-->
+                <!--<test name="${test.suite}"/>-->
+                <!--<test name="${testcase}" todir="${test.data.folder}" if="testcase"/>-->
+                <!--Run a batchtest-->
+                <batchtest todir="${test.data.folder}" unless="testcase">
+                    <fileset dir="${test.classes.folder}"
+                             includes="**/*Test.class"/>
+                </batchtest>
+            </junit>
+
+            <junitreport todir="${test.data.folder}">
+                <fileset dir="${test.data.folder}">
+                    <include name="TEST-*.xml"/>
+                </fileset>
+                <report format="frames"
+                        todir="${test.reports.folder}"/>
+            </junitreport>
+
+            <record name="${test.data.folder}/junit-log.txt" action="stop"/>
+        </sequential>
+    </macrodef>
+</project>

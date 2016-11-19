@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="javancss" basedir="..">
+
+    <property name="javancss.lib.folder" location="antlib/javancss"/>
+
+    <path id="javancss.class.path">
+        <fileset dir="${javancss.lib.folder}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <taskdef name="javancss"
+             classname="javancss.JavancssAntTask"
+             classpathref="javancss.class.path"/>
+
+    <macrodef name="generate.metrics">
+        <attribute name="src"/>
+        <attribute name="report-name"/>
+        <attribute name="report-dir" default="."/>
+        <attribute name="xml-report" default="@{report-dir}/@{report-name}.xml"/>
+        <attribute name="html-report" default="@{report-dir}/@{report-name}.html"/>
+        <attribute name="stylesheet" default="${javancss.lib.folder}/xslt/javancss2html.xsl"/>
+        <sequential>
+            <mkdir dir="@{report-dir}"/>
+            <javancss
+                srcdir="@{src}"
+                includes="**/*.java"
+                generatereport="true"
+                outputfile="@{xml-report}"
+                format="xml"
+                functionmetrics="false"/>
+            <style
+                in="@{xml-report}"
+                out="@{html-report}"
+                style="@{stylesheet}"/>
+        </sequential>
+    </macrodef>
+
+</project>

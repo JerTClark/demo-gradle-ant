@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jer.checkstyle" basedir="..">
+
+    <property name="checkstyle.lib.dir" location="antlib/checkstyle"/>
+
+    <path id="checkstyle.class.path">
+        <fileset dir="${checkstyle.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <taskdef
+        resource="checkstyletask.properties"
+        classpathref="checkstyle.class.path"/>
+
+    <macrodef name="jer.checkstyle"
+              description="Generates Code Convention Violations Report">
+        <attribute name="src"/>
+        <attribute name="checkstyle-reports"/>
+        <attribute name="checkstyle-checks-file"
+                   default="${checkstyle.lib.dir}/google_checks.xml"/>
+        <attribute name="checkstyle-xml-report-file"
+                   default="@{checkstyle-reports}/checkstyle-report.xml"/>
+        <attribute name="checkstyle-html-report-file"
+                   default="@{checkstyle-reports}/checkstyle-report.html"/>
+        <attribute name="checkstyle-stylesheet"
+                   default="${checkstyle.lib.dir}/checkstyle-style.xsl"/>
+        <sequential>
+            <mkdir dir="@{checkstyle-reports}"/>
+            <checkstyle
+                config="@{checkstyle-checks-file}"
+                failureproperty="checkstyle.failure"
+                failonviolation="false">
+                <formatter type="xml" tofile="@{checkstyle-xml-report-file}"/>
+                <fileset dir="@{src}" includes="**/*.java"/>
+            </checkstyle>
+            <style
+                in="@{checkstyle-xml-report-file}"
+                out="@{checkstyle-html-report-file}"
+                style="@{checkstyle-stylesheet}"/>
+        </sequential>
+    </macrodef>
+
+</project>

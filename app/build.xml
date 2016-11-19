@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<project name="jerant" default="build">
+
+    <description>
+        Sam-Bodden, Brian. Beginning POJOs. Apress: 2006.
+        Loughran, Steve, and Erik Hatcher. Ant in Action. Manning: 2007.
+    </description>
+
+    <!--Imports-->
+    <import file="ant/optional/ant-banner.xml"/>
+    <import file="ant/clean/ant-clean.xml"/>
+    <import file="ant/docs/ant-docs.xml"/>
+    <import file="ant/optional/ant-examples.xml"/>
+    <import file="ant/optional/ant-flatten.xml"/>
+    <import file="ant/init/ant-init.xml"/>
+    <import file="ant/ant-properties.xml"/>
+    <import file="ant/testing/ant-testing.xml"/>
+    <import file="ant/optional/ant-updates.xml"/>
+
+    <!--Jars from the lib folder-->
+    <path id="class.path">
+        <fileset dir="${lib.folder}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <!--Files from the classes folder-->
+    <path id="app.class.path">
+        <pathelement location="${classes.folder}"/>
+        <path refid="class.path"/>
+    </path>
+
+    <!--Compile target-->
+    <target name="compile"
+            depends="init"
+            description="Compiles the classes">
+        <jeremy.banner target="compile" message="Compiling your classes"/>
+        <javac debug="on"
+                deprecation="on"
+                optimize="off"
+                destdir="${classes.folder}"
+                srcdir="${src.java.folder}">
+        </javac>
+        <!--Creates "flattened" files in the data dir-->
+        <jer.flatten/>
+    </target>
+
+    <!--Archive target-->
+    <target name="jarchive"
+            depends="jer.clean.all, compile"
+            description="Creates the JAR file">
+        <jeremy.banner target="archive" message="Creating jar file"/>
+        <jar destfile="${dist.folder}/${ant.project.name}-${version.number}.jar"
+             basedir="${build.folder}"
+             duplicate="preserve"
+             compress="true"/>
+        <property name="project.jar.file" value="${dist.folder}/${ant.project.name}-${version.number}.jar"/>
+    </target>
+
+    <!--Run the program-->
+    <target name="execute"
+            depends="compile"
+            description="Runs the program">
+        <echo level="warn"
+              message="Now running TechConf"/>
+        <record name="${log.folder}/execute-log.txt"
+                action="start"/>
+        <java
+                classname="cla.jer.main.Main"
+                classpath="${classes.folder}">
+        </java>
+        <record name="${log.folder}/execute-log.txt"
+                action="stop"/>
+    </target>
+
+    <!--Do it all-->
+    <target name="build"
+            depends="jer.testing.test.run, jer.docs.generate, jarchive"
+            description="Creates directories, generate docs, compiles source, runs tests, and creates jar"/>
+
+    <!--Do it all w/o docs-->
+    <target name="build.no.docs"
+            depends="jer.testing.test.run, jarchive"
+            description="Creates directories, compile source, runs tests, and create jar"/>
+
+    <target name="update" depends="init">
+        <jer.check/>
+    </target>
+
+    <target name="props.file">
+        <create.project.property.file/>
+    </target>
+
+    <!--Say hello-->
+    <target name="hello">
+        <echo>Hello!</echo>
+    </target>
+
+    <target name="create-manual">
+        <zip destfile="libs/manual.zip">
+            <fileset dir="ant" includes="README.md"/>
+        </zip>
+    </target>
+
+    <target name="clean" description="Cleans everything from the Ant build script">
+        <delete dir="${build.folder}"/>
+        <delete dir="libs" includes="*.zip"/>
+    </target>
+
+</project>

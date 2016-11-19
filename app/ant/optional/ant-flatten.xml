@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<project name="jer.flat" basedir="../../">
+    <import file="../../build.xml"/>
+    <macrodef name="jer.flatten">
+        <sequential>
+            <property name="flat.dir" location="${data.folder}/flat"/>
+            <mkdir dir="${flat.dir}"/>
+            <copy todir="${flat.dir}">
+                <fileset dir="${src.java.folder}" includes="**/*.java"/>
+                <packagemapper from="*.java" to="*.java"/>
+            </copy>
+        </sequential>
+    </macrodef>
+</project>

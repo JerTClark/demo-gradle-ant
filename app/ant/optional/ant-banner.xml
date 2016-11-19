@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jer.banner" basedir="../..">
+
+    <!--Use this macrodef anywhere this file is imported-->
+    <!--EX: <jeremy.banner target="my.target.name" message="Running program"/>-->
+
+    <macrodef name="jeremy.banner">
+        <attribute name="target"/>
+        <attribute name="message" default=""/>
+        <sequential>
+            <echo>Ant's running @{target}</echo>
+            <echo>@{message}</echo>
+        </sequential>
+    </macrodef>
+
+</project>

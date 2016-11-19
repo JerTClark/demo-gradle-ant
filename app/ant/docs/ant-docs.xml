@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jer.docs" basedir="..">
+
+    <import file="../../build.xml"/>
+    <import file="checkstyle.xml"/>
+    <import file="javadoc.xml"/>
+    <import file="javancss.xml"/>
+    <import file="java2html.xml"/>
+
+    <!--Docs target-->
+    <target name="generate"
+            depends="compile"
+            description="Generates all documentation">
+        <mkdir dir="${docs}"/>
+        <jeremy.banner target="generate.docs" message="Generating JavaDocs"/>
+        <record name="${log.folder}/log.txt" action="start"/>
+        <!--JavaDocs-->
+        <generate.javadoc
+                class.path="${classes.folder}"
+                destDir="${docs.api}"
+                source.path="${src.folder}"
+                year="2015"/>
+        <!--HTML-->
+        <generate.html
+                src="${src.folder}"
+                dest="${docs.html.source}"/>
+        <!--Checkstyle-->
+        <jer.checkstyle
+                src="${src.folder}"
+                checkstyle-reports="${docs.reports}"/>
+        <!--Metrics-->
+        <generate.metrics
+                src="${src.folder}"
+                report-dir="${docs.reports}"
+                report-name="${ant.project.name}"/>
+        <record name="${log.folder}/log.txt" action="stop"/>
+    </target>
+
+</project>

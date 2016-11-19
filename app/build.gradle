@@ -1,0 +1,69 @@
+import org.apache.tools.ant.Target
+import org.apache.tools.ant.types.FileSet
+
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    antCompile
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+	compile 'org.codehaus.groovy:groovy-all:2.4.5'
+    antCompile 'com.puppycrawl.tools:checkstyle:6.14'
+    antCompile 'de.java2html:java2html:5.0'
+    antCompile 'org.codehaus.javancss:javancss:33.54'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
+    testCompile 'org.testng:testng:6.9.4'
+	testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+	testCompile 'org.codenarc:CodeNarc:0.18.1'
+}
+
+//ant.properties."class.path" = configurations.antCompile.asPath
+
+//ant.project.addTarget('clean', new Target())
+ant.importBuild("build.xml")
+
+compile {
+    inputs.dir file(ant.properties."src.java.folder")
+    outputs.dir file(ant.properties."classes.folder")
+}
+
+hello.doLast {
+    println "How are you today?"
+}
+
+task listAntProperties() {
+    doLast{
+        println "${ant.properties."dist.folder"}"
+        println "${ant.properties."src.folder"}"
+    }
+}
+
+task useAntTask {
+    def someUrl = "https://ant.apache.org/manual/Tasks/get.html"
+    doLast {
+        ant.get(dest: "${projectDir}/libs", usetimestamp: true) {
+            url(url: someUrl)
+        }
+    }
+}
+
+task cleanGradle(type: Delete) {
+    def zipFiles = file("libs").listFiles().findAll({it.getName().contains(".zip")})
+    zipFiles.each {println "Cleaning ${it.getName()}"}
+    delete "libs/gmanual.zip"
+}
+
+task createManual(type: Zip) {
+    baseName = 'gmanual'
+    destinationDir = file("libs")
+    from('ant') {
+        include 'README.md'
+    }
+}

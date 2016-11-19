@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jer.init" basedir="../../../">
+
+    <import file="../../build.xml"/>
+    <import file="properties.file.xml"/>
+
+    <!--Non-source files to copy and make available-->
+    <patternset id="non.source.set">
+        <exclude name="**/*.java"/>
+        <exclude name="**/*.txt"/>
+        <exclude name="**/*.md"/>
+        <exclude name="**/*.html"/>
+        <exclude name="**/*.gitignore"/>
+        <exclude name="**/test*"/>
+    </patternset>
+
+    <!--The "init" target (implicit)-->
+    <target name="init">
+        <jeremy.banner target="init" message="Creating folders and copying files"/>
+        <!--Create project.properties-->
+        <create.project.property.file/>
+        <mkdir dir="${build.folder}"/>
+        <mkdir dir="${classes.folder}"/>
+        <mkdir dir="${dist.folder}"/>
+        <mkdir dir="${dist.bin.folder}"/>
+        <mkdir dir="${log.folder}"/>
+        <mkdir dir="${data.folder}"/>
+        <!--Copy all non-source files to classes dir-->
+        <copy todir="${classes.folder}">
+            <fileset dir="${src.java.folder}">
+                <patternset refid="non.source.set"/>
+            </fileset>
+            <fileset dir=".">
+                <include name="*.properties"/>
+            </fileset>
+        </copy>
+    </target>
+
+</project>

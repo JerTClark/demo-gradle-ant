@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jer.examples" basedir="../../">
+
+    <import file="../../build.xml"/>
+
+    <target name="composite"
+            depends="jer.init.init"
+            description="Copies .java source as both .java and .java.txt to ${dist.folder}">
+        <copy todir="${dist.folder}" enablemultiplemappings="true">
+            <fileset dir="${src.java.folder}" includes="**/*.java"/>
+            <compositemapper>
+                <identitymapper/>
+                <globmapper from="*.java" to="*.java.txt"/>
+            </compositemapper>
+        </copy>
+    </target>
+
+    <target name="chained"
+            depends="jer.init.init"
+            description="Copies .java source as both .java and .txt to ${dist.folder}">
+        <copy todir="${dist.folder}" enablemultiplemappings="true">
+            <fileset dir="${src.java.folder}" includes="**/*.java"/>
+            <chainedmapper>
+                <packagemapper from="*.java" to="*.java"/>
+                <globmapper from="*.java" to="*.txt"/>
+            </chainedmapper>
+        </copy>
+    </target>
+
+    <target name="about.html"
+            depends="jer.init.init"
+            description="Demonstrates generation of a file using tokens">
+        <tstamp>
+            <format property="timestamp.iso"
+                    pattern="yyyy-mm-dd'T'HH:mm:ss"
+                    locale="en"/>
+        </tstamp>
+        <copy todir="${dist.folder}" overwrite="true">
+            <fileset dir="templates" includes="*.html"/>
+            <globmapper from="*.html" to="About.html"/>
+            <filterset>
+                <filter token="TITLE" value="About"/>
+                <filter token="DATE" value="${TODAY}"/>
+                <filter token="NAME" value="${ant.project.name}"/>
+                <filter token="AUTHOR" value="JerTClark"/>
+            </filterset>
+            <filterset begintoken="[[" endtoken="]]">
+                <filter token="TIMESTAMP" value="${timestamp.iso}"/>
+            </filterset>
+        </copy>
+    </target>
+
+    <target name="scripts"
+            depends="jer.init.init"
+            description="Demonstrates copying platform-specific scripts distributable to their respective OSes">
+        <copy todir="${dist.bin.folder}" overwrite="true">
+            <fileset dir="${bin.folder}" includes="${scripts.unix}, ${scripts.dos}"/>
+            <filterset begintoken="[[" endtoken="]]">
+                <filter token="TARGET.NAME" value="${os.arch}"/>
+            </filterset>
+        </copy>
+        <fixcrlf srcdir="${dist.bin.folder}" eol="unix"
+                 includes="${scripts.unix}"/>
+        <fixcrlf srcdir="${dist.bin.folder}" eol="dos"
+                 includes="${scripts.dos}"/>
+        <chmod dir="${dist.bin.folder}" perm="a+x"
+               includes="${scripts.unix}"/>
+    </target>
+
+    <target name="readme.docs"
+            depends="jer.init.init"
+            description="Demonstrates creating platform-compatible README file">
+        <property name="readme.dos.file" location="${dist.folder}/ReadMe.txt"/>
+        <property name="readme.unix.file" location="${dist.folder}/README"/>
+        <copy todir="${dist.folder}" enablemultiplemappings="true">
+            <fileset dir="${templates.folder}" includes="README"/>
+                <compositemapper>
+                    <globmapper from="*" to="ReadMe.txt"/>
+                    <globmapper from="*" to="README"/>
+                </compositemapper>
+        </copy>
+        <fixcrlf eol="crlf" file="${readme.dos.file}"
+                 tab="remove" tablength="4"/>
+        <fixcrlf eol="lf" file="${readme.unix.file}"
+                 tab="remove" tablength="2"/>
+    </target>
+
+    <target name="unjarchive"
+            depends="jarchive"
+            description="Demonstrates un-jarring JAR file">
+        <unjar src="${project.jar.file}"
+                dest="${build.folder}/unjar"/>
+    </target>
+</project>

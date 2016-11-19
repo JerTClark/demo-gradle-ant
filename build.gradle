@@ -1,0 +1,8 @@
+allprojects {
+    group = "demo-gradle-ant"
+}
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+}

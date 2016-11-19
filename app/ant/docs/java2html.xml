@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="java2html" basedir="..">
+    <property name="java2html.lib.folder" location="antlib/java2html"/>
+
+    <path id="java2html.class.path">
+        <fileset dir="${java2html.lib.folder}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <taskdef name="java2html"
+             classname="de.java2html.anttasks.Java2HtmlTask"
+             classpathref="java2html.class.path"/>
+
+    <macrodef name="generate.html"
+              description="Generate some browse-able html from your source code">
+        <attribute name="src"/>
+        <attribute name="dest"/>
+        <sequential>
+            <mkdir dir="@{dest}"/>
+            <java2html
+                srcdir="@{src}"
+                destdir="@{dest}"
+                includes="**/*.jar"
+                outputformat="html"
+                tabs="4"
+                style="eclipse"
+                showlinenumbers="true"
+                showfilename="true"
+                showtableborder="true"
+                includedocumentheader="true"
+                includedocumentfooter="true"
+                addlineanchors="true"
+                lineanchorprefix="fff"/>
+        </sequential>
+    </macrodef>
+
+</project>

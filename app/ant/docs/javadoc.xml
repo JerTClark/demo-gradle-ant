@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jer.javadoc" basedir="..">
+    <!--JavaDocs-->
+    <macrodef name="generate.javadoc" description="Generates JavaDocs">
+        <attribute name="company" default="Snapper"/>
+        <attribute name="source.path"/>
+        <attribute name="class.path"/>
+        <attribute name="year"/>
+        <attribute name="destDir"/>
+        <sequential>
+            <javadoc
+                    destdir="@{destDir}"
+                    author="true"
+                    version="true"
+                    use="true"
+                    windowtitle="${ant.project.name}"
+                    sourcepath="@{source.path}"
+                    classpath="@{class.path}"
+                    packagenames="*.*"
+                    verbose="false">
+                <doctitle><![CDATA[<h1>${ant.project.name}</h1>]]></doctitle>
+                <bottom>
+                    <![CDATA[<i>Copyright &#169; @{year} @{company} All rights reserved.</i>]]>
+                </bottom>
+                <tag name="todo" scope="all" description="To do:"/>
+            </javadoc>
+        </sequential>
+    </macrodef>
+</project>

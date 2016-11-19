@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<project name="jer.updates" basedir="../../">
+
+    <import file="../../build.xml"/>
+
+    <macrodef name="jer.check">
+        <sequential>
+            <uptodate property="update.zip">
+                <srcfiles dir="${src.java.folder}" includes="**/*.java"/>
+                <mergemapper to="${dist.folder}/${ant.project.name}.zip"/>
+            </uptodate>
+            <echo file="${log.folder}/update.txt" append="false" message="${update.zip}"/>
+        </sequential>
+    </macrodef>
+
+</project>

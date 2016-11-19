@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jer.testing" basedir="../../">
+
+    <import file="../../build.xml"/>
+    <import file="junit.xml"/>
+    <import file="test.init.xml"/>
+    <import file="test.compile.xml"/>
+
+    <!--Tests-->
+    <target name="test.init"
+            depends="compile"
+            description="Create tests structure">
+        <jeremy.banner target="init.tests"
+                       message="Creating tests structure"/>
+        <init.test.folders java-tests-folder="${src.test.folder}"
+                           build-folder="${build.folder}"
+                           build-classes-folder="${classes.folder}"
+                           lib-folder="${lib.folder}"/>
+    </target>
+    <target name="test.compile"
+            depends="test.init"
+            description="Compiles the test source">
+        <jeremy.banner target="compile.tests"
+                       message="Compiling the test source"/>
+        <compile.tests/>
+    </target>
+    <target name="test.run"
+            depends="test.compile"
+            description="Runs JUnit tests">
+        <jeremy.banner target="test"
+                       message="Running JUnit tests"/>
+        <junit.tests/>
+    </target>
+</project>

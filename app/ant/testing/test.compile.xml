@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jer.test.compile" basedir="../../">
+
+    <import file="test.init.xml"/>
+
+    <macrodef name="compile.tests">
+        <sequential>
+            <record name="${test.data.folder}/javac-log.txt" action="start"/>
+
+            <echo file="${test.data.folder}/javac.props.txt" append="false" message="destdir = test.classes.folder: ${test.classes.folder}&#xD;"/>
+            <echo file="${test.data.folder}/javac.props.txt" append="true" message="srcdir = test.java.src.folder: ${test.java.src.folder}&#xD;"/>
+            <echo file="${test.data.folder}/javac.props.txt" append="true" message="classpath = test.classpath.prop: ${test.classpath.prop}&#xD;"/>
+
+            <!--Compile tests-->
+            <javac debug="true"
+                   deprecation="on"
+                   optimize="off"
+                   includeantruntime="true"
+                   srcdir="${test.java.src.folder}"
+                   destdir="${test.classes.folder}">
+                <classpath path="${test.classpath.prop}"/>
+            </javac>
+
+            <record name="${test.data.folder}/javac-log.txt" action="stop"/>
+        </sequential>
+    </macrodef>
+
+</project>

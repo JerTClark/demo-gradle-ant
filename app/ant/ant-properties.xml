@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ant-properties" basedir="..">
+
+    <!--Properties-->
+    <available property="build.props"
+               file="build.properties"/>
+
+    <!--Version number-->
+    <property name="version.number" value="0.0.1"/>
+
+    <!--Folders-->
+    <property name="build.folder" location="antbuild"/>
+    <property name="lib.folder" location="antlib"/>
+    <property name="classes.folder" location="${build.folder}/classes"/>
+    <property name="dist.folder" location="${build.folder}/dist"/>
+    <property name="log.folder" location="${build.folder}/log"/>
+    <property name="data.folder" location="${build.folder}/data"/>
+    <property name="bin.folder" location="bin"/>
+    <property name="dist.bin.folder" location="${dist.folder}/bin"/>
+    <property name="templates.folder" location="templates"/>
+
+    <!--Source-->
+    <property name="src.folder" location="src"/>
+    <property name="src.java.folder" location="${src.folder}/main/java"/>
+    <property name="src.test.folder" location="${src.folder}/test/java"/>
+    <property name="src.j2ee.folder" location="${src.folder}/j2ee"/>
+
+    <!--Docs-->
+    <property name="docs" location="docs"/>
+    <property name="docs.api" location="${docs}/api"/>
+    <property name="docs.html.source" location="${docs}/source"/>
+    <property name="docs.reports" location="${docs}/reports"/>
+    <property name="docs.test" location="${docs}/tests"/>
+    <property name="src.web" location="web"/>
+
+    <!--Script Extensions-->
+    <property name="scripts.unix" value="**/*.sh, **/*.pl, **/*.py"/>
+    <property name="scripts.dos" value="**/*.bat, **/*.cmd"/>
+</project>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test.initialize" basedir="../../">
+
+    <macrodef name="init.test.folders">
+        <attribute name="build-folder"/>
+        <attribute name="build-classes-folder"/>
+        <attribute name="lib-folder"/>
+        <attribute name="java-tests-folder"/>
+        <attribute name="test-properties-file" default="test.properties"/>
+
+        <sequential>
+            <!--Tests folders-->
+            <property name="test.folder" location="@{build-folder}/test"/>
+            <property name="test.classes.folder" location="${test.folder}/classes"/>
+            <property name="test.data.folder" location="${test.folder}/data"/>
+            <property name="test.reports.folder" location="${test.folder}/reports"/>
+            <property name="test.java.src.folder" location="@{java-tests-folder}"/>
+
+            <!--Libraries classpath-->
+            <path id="compile.classpath">
+                <fileset dir="@{lib-folder}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </path>
+
+            <!--Compiled production classes-->
+            <path id="test.compile.classpath">
+                <path refid="compile.classpath"/>
+                <pathelement location="@{build-classes-folder}"/>
+            </path>
+
+            <!--Compiled test classes-->
+            <path id="test.classpath">
+                <path refid="test.compile.classpath"/>
+                <pathelement location="${test.classes.folder}"/>
+            </path>
+
+            <property name="test.classpath.prop" refid="test.classpath"/>
+
+            <!--Output directories-->
+            <mkdir dir="${test.classes.folder}"/>
+            <delete dir="${test.data.folder}"/>
+            <delete dir="${test.reports.folder}"/>
+            <mkdir dir="${test.data.folder}"/>
+            <mkdir dir="${test.reports.folder}"/>
+
+            <!--Create a .properties file-->
+            <property name="test.prop.file" location="test.properties"/>
+
+            <tstamp>
+                <format property="TODAY" pattern="yyyy-mmmm-dd" locale="en"/>
+            </tstamp>
+
+            <touch file="${test.prop.file}"/>
+
+            <echo file="${test.prop.file}" append="false" message="#Test-specific&#xD;"/>
+            <echo file="${test.prop.file}" append="true" message="current.date=${TODAY}&#xD;"/>
+            <echo file="${test.prop.file}" append="true" message="test.folder=${test.folder}&#xD;"/>
+            <echo file="${test.prop.file}" append="true" message="test.data.folder=${test.data.folder}&#xD;"/>
+            <echo file="${test.prop.file}" append="true" message="test.classes.folder=${test.classes.folder}&#xD;"/>
+            <echo file="${test.prop.file}" append="true" message="test.java.src.folder=${test.java.src.folder}&#xD;"/>
+
+            <copy file="test.properties" tofile="${test.folder}/test.properties"/>
+
+        </sequential>
+    </macrodef>
+</project>

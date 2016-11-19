@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="properties" basedir="../../../">
+
+    <property environment="user.env"/>
+
+    <import file="../../build.xml"/>
+
+    <condition property="os"
+               value="windows"
+               else="other">
+        <or>
+            <os family="win9x"/>
+            <os family="winnt"/>
+        </or>
+    </condition>
+
+    <property name="prop.file" location="project.properties"/>
+
+    <macrodef name="create.project.property.file"
+              description="Create a project properties file">
+        <sequential>
+            <touch file="${prop.file}"/>
+            <echo file="${prop.file}" append="false" message="#Basic info&#xD;"/>
+            <echo file="${prop.file}" append="true" message="project.name=${ant.project.name}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="os.version=${os}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="user.name=${user.name}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="user.home=${user.home}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="user.dir=${user.dir}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="#Build-specific properties&#xD;"/>
+            <echo file="${prop.file}" append="true" message="##Build folders&#xD;"/>
+            <echo file="${prop.file}" append="true" message="build.folder=${build.folder}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="lib.folder=${lib.folder}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="classes.folder=${classes.folder}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="dist.folder=${dist.folder}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="log.folder=${log.folder}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="##Source folders&#xD;"/>
+            <echo file="${prop.file}" append="true" message="src.folder=${src.folder}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="src.java.folder=${src.java.folder}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="src.test.folder=${src.test.folder}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="src.j2ee.folder=${src.j2ee.folder}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="src.web=${src.web}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="##Docs folders&#xD;"/>
+            <echo file="${prop.file}" append="true" message="docs=${docs}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="docs.api=${docs.api}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="docs.html.source=${docs.html.source}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="docs.reports=${docs.reports}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="docs.test=${docs.test}&#xD;"/>
+            <echo file="${prop.file}" append="true" message="##End properties"/>
+        </sequential>
+    </macrodef>
+
+</project>
