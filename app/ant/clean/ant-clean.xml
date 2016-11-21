@@ -22,7 +22,7 @@
     </patternset>
 
     <!--Clean build-->
-    <target name="build"
+    <target name="buildClean"
             description="Removes the temporary junk">
         <delete dir="${build.folder}"/>
     </target>

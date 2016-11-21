@@ -74,7 +74,7 @@
     </target>
 
     <!--Do it all-->
-    <target name="build"
+    <target name="buildAnt"
             depends="jer.testing.test.run, jer.docs.generate, jarchive"
             description="Creates directories, generate docs, compiles source, runs tests, and creates jar"/>
 
@@ -102,7 +102,7 @@
         </zip>
     </target>
 
-    <target name="clean" description="Cleans everything from the Ant build script">
+    <target name="cleanAnt" description="Cleans everything from the Ant build script">
         <delete dir="${build.folder}"/>
         <delete dir="libs" includes="*.zip"/>
     </target>
